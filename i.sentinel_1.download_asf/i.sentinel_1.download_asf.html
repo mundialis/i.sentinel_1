@@ -1,0 +1,53 @@
+<h2>DESCRIPTION</h2>
+
+<em>i.sentinel_1.download_asf</em> searches and downloads SAR data from the Alaska
+Satellite Facility (ASF) using the <a href="https://asf.alaska.edu/api/">ASF-API</a>.
+The current GRASS GIS region is used to define the search area.
+Currently, <em>i.sentinel_1.download_asf</em> only allows the search and download of
+Sentinel-1 data. The benefit of this addon compared to
+<a href="i.sentinel.download">i.sentinel.download</a> is that the latter uses
+the  Copernicus Open Access Hub, where Sentinel-1 data is consecutively moved
+into a long-term archive. Users need to trigger the re-upload of the data which
+can take up to 24 hours. ASF's Distributed Active Archive Center does not have
+these restrictions.
+
+<h2>REQUIREMENTS</h2>
+<ul>
+  <li>The download utility <a href="https://aria2.github.io/">aria2</a> has to be
+    installed on the system.</li>
+  <li> Login-credentials for <a href="https://urs.earthdata.nasa.gov/">NASA
+    Earthdata</a> have to be saved in a file in the format
+    <div class="code"><pre>
+      http-user=username
+      http-passwd=password
+    </pre></div></li>
+  <li> Define a (thematic) study area in your
+    <a href="https://urs.earthdata.nasa.gov/">NASA Earthdata</a> profile settings.
+    </li>
+  <li> Add <i>Alaska Satellite Facility Data Access</i> to your list of
+    authorized applications in your <a href="https://urs.earthdata.nasa.gov/">
+    NASA Earthdata</a> profile settings.</li>
+</ul>
+
+<h2>EXAMPLE</h2>
+
+<div class="code"><pre>
+# List all Sentinel-1 SLC data from June 2016 that intersect with the current region
+i.sentinel_1.download_asf -l credentials=credentials start=2016-06-01 end=2016-06-30 processinglevel=SLC
+
+# Download the first 5 Sentinel-1 GRD datasets from an ASCENDING orbit from June 2016
+# that intersects with the current region
+i.sentinel_1.download_asf output=output_folder credentials=credentials start=2016-06-01 end=2016-06-30 processinglevel=GRD flight_dir=ASCENDING limit=5
+
+# Download a specific Sentinel-1 granule regardless of computational region
+i.sentinel_1.download_asf output=output_folder credentials=credentials granules=S1A_IW_GRDH_1SDV_20201010T135633_20201010T135658_034735_040BF5_B2E9
+</pre></div>
+
+<h2>AUTHOR</h2>
+
+Guido Riembauer, <a href="https://www.mundialis.de/">mundialis</a>
+
+<!--
+<p>
+<i>Last changed: $Date$</i>
+-->
