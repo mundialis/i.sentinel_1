@@ -2,9 +2,16 @@
 Name:       SnappyFunctions
 Purpose:    Collection of functions to call ESA SNAP software steps
 Author:     Hajar Benelcadi, Guido Riembauer
-Copyright:  (C) 2020-2022 mundialis and the GRASS Development Team
-License:    This program is free software under the GNU General Public
-            License (>=v2).
+Copyright:  (C) 2020-2022 mundialis GmbH & Co. KG and the GRASS Development Team
+License:    This program is free software; you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation; either version 2 of the License, or
+            (at your option) any later version.
+
+            This program is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            GNU General Public License for more details.
 """
 
 
