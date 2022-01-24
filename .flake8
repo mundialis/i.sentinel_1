@@ -4,7 +4,7 @@
 # F821 undefined name '_'
 
 exclude = .git
-
+max-line-length = 88
 per-file-ignores =
     ./i.sentinel_1.change/i.sentinel_1.change.py: F821, E501
     ./i.sentinel_1.download_asf/i.sentinel_1.download_asf.py: F821, E501
