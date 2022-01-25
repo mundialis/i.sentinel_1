@@ -1,19 +1,25 @@
-"""
-Name:       i.sentinel_1.change test
-Purpose:    Tests i.sentinel_1.change GRASS module.
-Author:     Guido Riembauer
-Copyright:  (C) 2021-2022 mundialis GmbH & Co. KG, and the GRASS
-            Development Team
-Licence:    This program is free software; you can redistribute it and/or modify
-            it under the terms of the GNU General Public License as published by
-            the Free Software Foundation; either version 2 of the License, or
-            (at your option) any later version.
+#!/usr/bin/env python3
+############################################################################
+#
+# MODULE:      i.sentinel_1.change test
+# AUTHOR(S):   Guido Riembauer
+#
+# PURPOSE:     Tests i.sentinel_1.change GRASS module
+# COPYRIGHT:   (C) 2021-2022 mundialis GmbH & Co. KG, and the GRASS
+#              Development Team
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#############################################################################
 
-            This program is distributed in the hope that it will be useful,
-            but WITHOUT ANY WARRANTY; without even the implied warranty of
-            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-            GNU General Public License for more details.
-"""
 import os
 
 from grass.gunittest.case import TestCase
