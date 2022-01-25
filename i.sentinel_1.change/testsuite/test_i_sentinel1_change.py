@@ -2,7 +2,7 @@
 Name:       i.sentinel_1.change test
 Purpose:    Tests i.sentinel_1.change GRASS module.
 Author:     Guido Riembauer
-Copyright:  (C) 2021 Guido Riembauer, mundialis, and the GRASS
+Copyright:  (C) 2021-2022 mundialis GmbH & Co. KG, and the GRASS
             Development Team
 Licence:    This program is free software; you can redistribute it and/or modify
             it under the terms of the GNU General Public License as published by
