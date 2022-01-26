@@ -28,6 +28,7 @@
 # % keyword: imagery
 # % keyword: satellite
 # % keyword: Sentinel
+# % keyword: SAR
 # % keyword: download
 # % keyword: import
 # % keyword: mosaic
@@ -99,7 +100,7 @@
 
 # %flag
 # % key: s
-# % description: apply speckle filter
+# % description: Apply speckle filter
 # %end
 
 

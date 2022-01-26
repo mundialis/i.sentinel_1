@@ -20,7 +20,7 @@
 #
 #############################################################################
 # %Module
-# % description: extracts changes from Sentinel-1 Scenes from two dates
+# % description: Extracts changes from Sentinel-1 Scenes from two dates.
 # % keyword: imagery
 # % keyword: Sentinel
 # % keyword: satellite
@@ -29,22 +29,22 @@
 
 # %option G_OPT_R_INPUT
 # % key: date1_vv
-# % label: Input raster of first date in VV polarization (dB)
+# % label: Input raster map of first date in VV polarization (dB)
 # %end
 
 # %option G_OPT_R_INPUT
 # % key: date1_vh
-# % label: Input raster of first date in VH polarization (dB)
+# % label: Input raster map of first date in VH polarization (dB)
 # %end
 
 # %option G_OPT_R_INPUT
 # % key: date2_vv
-# % label: Input raster of second date in VV polarization (dB)
+# % label: Input raster map of second date in VV polarization (dB)
 # %end
 
 # %option G_OPT_R_INPUT
 # % key: date2_vh
-# % label: Input raster of second date in VH polarization (dB)
+# % label: Input raster map of second date in VH polarization (dB)
 # %end
 
 # %option
@@ -64,7 +64,7 @@
 
 # %option G_OPT_R_OUTPUT
 # % key: output
-# % label: Output raster containing areas of change
+# % label: Output raster map containing areas of change
 # %end
 
 
@@ -189,7 +189,7 @@ def main():
     # feed_command does not wait until finished
     cat_proc.wait()
 
-    grass.message(_(f"Successfully created output raster map {output}"))
+    grass.message(_(f"Successfully created output raster map <{output}>"))
     return 0
 
 

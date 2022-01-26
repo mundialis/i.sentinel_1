@@ -5,7 +5,7 @@ Satellite Facility (ASF) using the <a href="https://asf.alaska.edu/api/">ASF-API
 The current GRASS GIS region is used to define the search area.
 Currently, <em>i.sentinel_1.download_asf</em> only allows the search and download of
 Sentinel-1 data. The benefit of this addon compared to
-<a href="i.sentinel.download">i.sentinel.download</a> is that the latter uses
+<a href="i.sentinel.download.html">i.sentinel.download</a> is that the latter uses
 the  Copernicus Open Access Hub, where Sentinel-1 data is consecutively moved
 into a long-term archive. Users need to trigger the re-upload of the data which
 can take up to 24 hours. ASF's Distributed Active Archive Center does not have
@@ -42,6 +42,10 @@ i.sentinel_1.download_asf output=output_folder credentials=credentials start=201
 # Download a specific Sentinel-1 granule regardless of computational region
 i.sentinel_1.download_asf output=output_folder credentials=credentials granules=S1A_IW_GRDH_1SDV_20201010T135633_20201010T135658_034735_040BF5_B2E9
 </pre></div>
+<h2>SEE ALSO</h2>
+<em>
+<a href="i.sentinel.download.html">i.sentinel.download</a>
+</em>
 
 <h2>AUTHOR</h2>
 

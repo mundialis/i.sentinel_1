@@ -23,9 +23,13 @@
 #
 #############################################################################
 # %Module
-# % description: Uses snappy (SNAP ESA) to preprocess and import Sentinel 1 GRD data
+# % description: Uses snappy (SNAP ESA) to preprocess and import Sentinel 1 GRD data.
 # % keyword: display
 # % keyword: raster
+# % keyword: Sentinel 
+ # % keyword: SAR
+# % keyword: satellite
+# % keyword: snappy
 # %End
 
 # %option
@@ -33,8 +37,8 @@
 # % type: string
 # % required: yes
 # % multiple: no
-# % label: path to the S-1 scene
-# % description: S-1 data must be in .zip format
+# % label: Path to the S-1 scene
+# % description: Sentinel-1 data must be in .zip format
 # %end
 
 # %option
@@ -42,16 +46,10 @@
 # % type: string
 # % required: yes
 # % multiple: no
-# % label: path to store BEAM-DIMAPs as intermediate products
+# % label: Path to store BEAM-DIMAPs as intermediate products
 # %end
 
-# %option
-# % key: memory
-# % type: integer
-# % required: no
-# % multiple: no
-# % label: memory for data import
-# % answer: 300
+# %option G_OPT_MEMORYMB
 # %end
 
 # %option
@@ -59,7 +57,7 @@
 # % type: string
 # % required: no
 # % multiple: no
-# % label: extent of imported raster
+# % label: Extent of imported raster map
 # % options: input,region
 # % answer: input
 # %end
@@ -69,8 +67,8 @@
 # % type: string
 # % required: yes
 # % multiple: yes
-# %label: bands to process
-# % description: band to process
+# %label: Bands to process
+# % description: Bands to process
 # % options: Sigma0_VV,Sigma0_VH,Gamma0_VV,Gamma0_VH
 # % answer: Sigma0_VV,Sigma0_VH
 # %end
@@ -86,7 +84,7 @@
 
 # %flag
 # % key: s
-# % description: apply speckle filter
+# % description: Apply speckle filter
 # %end
 
 
@@ -163,7 +161,7 @@ def main():
         grass.fatal(_("File {name} not found.".format(name=fileimage)))
 
     if not fileimage.endswith(".zip"):
-        grass.fatal(_("Input is not a S1 .zip file"))
+        grass.fatal(_("Input is not a Sentinel-1 .zip file"))
 
     if not os.path.isdir(outpath):
         try:

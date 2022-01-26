@@ -3,7 +3,7 @@
 <em>i.sentinel_1.change</em> is a GRASS GIS addon that extracts areas of changed backscatter values from
 two Sentinel-1 input scenes. The input backscatter values are expected in dB scale.
 The addon calculates two polarisation ratios (date2_vv/date1_vv and date2_vh/date1_vh),
-smoothes them with a median filter in  <a href="r.neighbors.html">r.neighbors</a>
+smoothes them with a median filter in  <a href="https://grass.osgeo.org/grass-stable/manuals/r.neighbors.html">r.neighbors</a>
 and applies the user-defined thresholds 1+<b>change_threshold</b> and 1-<b>change_threshold</b> to identify
 areas of change. For example, a <b>change_threshold</b> of 0.5 would mean that areas with a ratio <= 0.5 are
  identified as signal decrease, and areas with a ratio of >= 1.5 are identified as signal increase.
@@ -15,11 +15,11 @@ i.sentinel_1.change date1_vv=Date1_Sigma0_VV_log date1_vh=Date1_Sigma0_VH_log da
 
 <h2>SEE ALSO</h2>
 <em>
-<a href="r.mapcalc.html">r.mapcalc</a>
-<a href="r.neighbors.html">r.neighbors</a>
-<a href="r.null.html">r.null</a>
-<a href="r.colors.html">r.colors</a>
-<a href="r.category.html">r.category</a>
+<a href="https://grass.osgeo.org/grass-stable/manuals/r.mapcalc.html">r.mapcalc</a>,
+<a href="https://grass.osgeo.org/grass-stable/manuals/r.neighbors.html">r.neighbors</a>,
+<a href="https://grass.osgeo.org/grass-stable/manuals/r.null.html">r.null</a>,
+<a href="https://grass.osgeo.org/grass-stable/manuals/r.colors.html">r.colors</a>,
+<a href="https://grass.osgeo.org/grass-stable/manuals/r.category.html">r.category</a>
 </em>
 
 <h2>AUTHORS</h2>
