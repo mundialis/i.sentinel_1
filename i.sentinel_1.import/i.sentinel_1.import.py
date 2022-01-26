@@ -26,8 +26,8 @@
 # % description: Uses snappy (SNAP ESA) to preprocess and import Sentinel 1 GRD data.
 # % keyword: display
 # % keyword: raster
-# % keyword: Sentinel 
- # % keyword: SAR
+# % keyword: Sentinel
+# % keyword: SAR
 # % keyword: satellite
 # % keyword: snappy
 # %End
