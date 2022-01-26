@@ -1,0 +1,42 @@
+<h2>DESCRIPTION</h2>
+
+<em>i.sentinel_1.import</em> is a GRASS GIS addon Python script based on snappy
+(Python API of the Sentinel Tool Box SNAP from ESA). It is used to
+preprocess a Sentinel-1 IW mode, GRD scene using the software
+(<a href="http://step.esa.int/main/toolboxes/snap/">ESA SNAP</a>). After
+preprocessing, the scene is imported into GRASS.
+
+<h2>NOTES</h2>
+
+<em>i.sentinel_1.import</em> is a preprocessing chain function for Sentinel-1 IW mode,
+GRD scenes. It runs the SNAP functions Border Noise Removal, Orbit File Application,
+Thermal Noise Removal, Calibration, Terrain Flattening (if Gamma0 is selected as output),
+Speckle Filtering (indicated by the <b> -s </b> flag), and Terrain Correction.
+Data are imported to GRASS using <a href="r.import.html">r.import</a>.
+For Terrain Flattening and Terrain Correction, an external DEM can be provided
+instead of the default auto-download of SRTM 1-sec HGT data by using the external_dem parameter.
+The output raster map will be named after the input scene plus a suffix for backscattering coefficient, polarization, and scaling to dB, for example:
+<i>S1A_IW_GRDH_1SDV_20220106T054218_20220106T054243_041336_04E9FD_F9DE_Sigma0_VH_log</i>
+<h2>EXAMPLE</h2>
+
+Sentinel-1 processing example:
+
+<div class="code"><pre>
+i.sentinel_1.import -s input=${DATAPATH} outpath=${OUTPATH} bandname=Sigma0_VV
+</pre></div>
+
+<h2>REQUIREMENTS</h2>
+ESA's <a href="https://step.esa.int/main/download/snap-download/">SNAP</a> needs to be installed
+and the SNAP-Python (snappy) interface needs to be configured
+(<a href="https://senbox.atlassian.net/wiki/spaces/SNAP/pages/50855941/Configure+Python+to+use+the+SNAP-Python+snappy+interface">instruction</a>)
+
+<h2>SEE ALSO</h2>
+<em>
+<a href="r.import.html">r.import</a>
+</em>
+
+<h2>AUTHORS</h2>
+
+Hajar Benelcadi, Guido Riembauer, <a href="https://www.mundialis.de/">mundialis</a>
+
+<p><i>Last changed: $Date$</i>
