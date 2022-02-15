@@ -17,6 +17,7 @@ For Terrain Flattening and Terrain Correction, an external DEM can be provided
 instead of the default auto-download of SRTM 1-sec HGT data by using the external_dem parameter.
 The output raster map will be named after the input scene plus a suffix for backscattering coefficient, polarization, and scaling to dB, for example:
 <i>S1A_IW_GRDH_1SDV_20220106T054218_20220106T054243_041336_04E9FD_F9DE_Sigma0_VH_log</i>
+
 <h2>EXAMPLE</h2>
 
 Sentinel-1 processing example:
@@ -26,17 +27,16 @@ i.sentinel_1.import -s input=${DATAPATH} outpath=${OUTPATH} bandname=Sigma0_VV
 </pre></div>
 
 <h2>REQUIREMENTS</h2>
+
 ESA's <a href="https://step.esa.int/main/download/snap-download/">SNAP</a> needs to be installed
 and the SNAP-Python (snappy) interface needs to be configured
 (<a href="https://senbox.atlassian.net/wiki/spaces/SNAP/pages/50855941/Configure+Python+to+use+the+SNAP-Python+snappy+interface">instruction</a>)
 
 <h2>SEE ALSO</h2>
 <em>
-<a href="r.import.html">r.import</a>
+<a href="https://grass.osgeo.org/grass-stable/manuals/r.import.html">r.import</a>
 </em>
 
 <h2>AUTHORS</h2>
 
-Hajar Benelcadi, Guido Riembauer, <a href="https://www.mundialis.de/">mundialis</a>
-
-<p><i>Last changed: $Date$</i>
+Hajar Benelcadi and Guido Riembauer, <a href="https://www.mundialis.de/">mundialis</a>, Germany
