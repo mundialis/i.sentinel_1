@@ -98,7 +98,7 @@ import sys
 try:
     from snappy import ProductIO
     from snappy import GPF
-except:
+except Exception:
     grass.error(
         _(
             "ESA SNAP installation not found (https://senbox.atlassian.net/wiki/spaces/SNAP/pages/50855941/Configure+Python+to+use+the+SNAP-Python+snappy+interface)."
