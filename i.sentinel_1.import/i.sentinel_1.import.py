@@ -94,8 +94,16 @@ import shutil
 import grass.script as grass
 import snappy
 import sys
-from snappy import ProductIO
-from snappy import GPF
+
+try:
+    from snappy import ProductIO
+    from snappy import GPF
+except:
+    grass.error(
+        _(
+            "ESA SNAP installation not found (https://senbox.atlassian.net/wiki/spaces/SNAP/pages/50855941/Configure+Python+to+use+the+SNAP-Python+snappy+interface)."
+        )
+    )
 
 rm_rasters = []
 temp_dem = None
