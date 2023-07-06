@@ -151,7 +151,7 @@ def cleanup():
 
 
 def freeRAM(unit, percent=100):
-    """ The function gives the amount of the percentages of the installed RAM.
+    """The function gives the amount of the percentages of the installed RAM.
     Args:
         unit(string): 'GB' or 'MB'
         percent(int): number of percent which shoud be used of the free RAM
@@ -164,8 +164,8 @@ def freeRAM(unit, percent=100):
     # use psutil cause of alpine busybox free version for RAM/SWAP usage
     mem_available = psutil.virtual_memory().available
     swap_free = psutil.swap_memory().free
-    memory_GB = (mem_available + swap_free) / 1024.0 ** 3
-    memory_MB = (mem_available + swap_free) / 1024.0 ** 2
+    memory_GB = (mem_available + swap_free) / 1024.0**3
+    memory_MB = (mem_available + swap_free) / 1024.0**2
 
     if unit == "MB":
         memory_MB_percent = memory_MB * percent / 100.0
@@ -182,9 +182,11 @@ def test_memory():
     memory = int(options["memory"])
     free_ram = freeRAM("MB", 100)
     if free_ram < memory:
-        grass.warning("Using %d MB but only %d MB RAM available." % (memory, free_ram))
+        grass.warning(
+            _("Using %d MB but only %d MB RAM available." % (memory, free_ram))
+        )
         options["memory"] = free_ram
-        grass.warning("Set used memory to %d MB." % (options["memory"]))
+        grass.warning(_("Set used memory to %d MB." % (options["memory"])))
 
 
 def transform_coord(array, from_epsg, to_epsg):
@@ -211,14 +213,18 @@ def shrink_footprint(input, distance, memory, unit):
     grass.use_temp_region()
     grass.run_command("g.region", vector=input, quiet=True)
     vertices = list(
-        grass.parse_command("v.out.ascii", input=input, output="-", format="wkt").keys()
+        grass.parse_command(
+            "v.out.ascii", input=input, output="-", format="wkt"
+        ).keys()
     )
     # get xs and ys
     nums_only = vertices[0].split("((")[1].split("))")[0].split(",")
     # add a space to first item to make it consistent
     nums_only[0] = " %s" % nums_only[0]
     # remove any remaining brackets
-    nums_only_corrected = [item.replace(")", "").replace("(", "") for item in nums_only]
+    nums_only_corrected = [
+        item.replace(")", "").replace("(", "") for item in nums_only
+    ]
     xs = [float(pair.split(" ")[1]) for pair in nums_only_corrected]
     ys = [float(pair.split(" ")[2]) for pair in nums_only_corrected]
     x_min = min(xs)
@@ -322,14 +328,23 @@ def shrink_footprint(input, distance, memory, unit):
     # add table and identifier column to new vector
     grass.run_command("v.db.addtable", map=newvect, quiet=True)
     identifier = list(
-        grass.parse_command("v.db.select", map=input, column="identifier").keys()
+        grass.parse_command(
+            "v.db.select", map=input, column="identifier"
+        ).keys()
     )[1]
 
     grass.run_command(
-        "v.db.addcolumn", map=newvect, columns="identifier VARCHAR(100)", quiet=True
+        "v.db.addcolumn",
+        map=newvect,
+        columns="identifier VARCHAR(100)",
+        quiet=True,
     )
     grass.run_command(
-        "v.db.update", map=newvect, column="identifier", value=identifier, quiet=True
+        "v.db.update",
+        map=newvect,
+        column="identifier",
+        value=identifier,
+        quiet=True,
     )
 
     # delete temp region so we are back at the original extent and resolution
@@ -356,19 +371,28 @@ def main():
     # check if we have required addons
     if not grass.find_program("i.sentinel.download", "--help"):
         grass.fatal(
-            _("The 'i.sentinel.download' module was not found, " "install it first:")
+            _(
+                "The 'i.sentinel.download' module was not found, "
+                "install it first:"
+            )
             + "\n"
             + "g.extension i.sentinel"
         )
     if not grass.find_program("i.sentinel.import", "--help"):
         grass.fatal(
-            _("The 'i.sentinel.import' module was not found, " "install it first:")
+            _(
+                "The 'i.sentinel.import' module was not found, "
+                "install it first:"
+            )
             + "\n"
             + "g.extension i.sentinel"
         )
     if not grass.find_program("i.sentinel_1.import", "--help"):
         grass.fatal(
-            _("The 'i.sentinel_1.import' module was not found, " "install it first:")
+            _(
+                "The 'i.sentinel_1.import' module was not found, "
+                "install it first:"
+            )
             + "\n"
             + ("g.extension " "i.sentinel_1.import url=/path/to/addon")
         )
@@ -432,7 +456,9 @@ def main():
         quiet=True,
     )
     if len(scene_intersect_parse) == 0:
-        grass.fatal(_("No input scenes found between %s and %s" % (start, end)))
+        grass.fatal(
+            _("No input scenes found between %s and %s" % (start, end))
+        )
     grass_resp = list(scene_intersect_parse.keys())
     # list of all scenes that intersect with the region
     scenes_intersect = [scene.split(" ")[1] for scene in grass_resp]
@@ -446,13 +472,19 @@ def main():
     if unit == "degree":
         nsres = float(10 / 111000)
         # get the latitude from the region center
-        lat = float(grass.parse_command("g.region", flags="gc")["center_northing"])
+        lat = float(
+            grass.parse_command("g.region", flags="gc")["center_northing"]
+        )
         ewres = float(10 / (111320 * np.cos(np.radians(lat))))
         # shrink_footprint() and r.s1.grd.import use grass.use_temp_region() so
         # we cant use it here. Region is fixed here and rolled back during
         # cleanup
         grass.run_command(
-            "g.region", vector=region_vector, nsres=nsres, ewres=ewres, flags="a"
+            "g.region",
+            vector=region_vector,
+            nsres=nsres,
+            ewres=ewres,
+            flags="a",
         )
 
     footprints_corrected = []
@@ -479,7 +511,10 @@ def main():
             quiet=True,
         )
         reduced_footprint = shrink_footprint(
-            footprint_dissolved, footprint_correction_m, options["memory"], unit
+            footprint_dissolved,
+            footprint_correction_m,
+            options["memory"],
+            unit,
         )
         footprints_corrected.append(reduced_footprint)
 
@@ -489,10 +524,15 @@ def main():
 
     all_scenes_rast = "all_scenes_rast_%s" % pid
     rm_rasters.append(all_scenes_rast)
-    expression_str = "%s = %s" % (all_scenes_rast, "|||".join(footprints_corrected))
+    expression_str = "%s = %s" % (
+        all_scenes_rast,
+        "|||".join(footprints_corrected),
+    )
     grass.run_command("r.mapcalc", expression=expression_str, quiet=True)
     null_cells_all = int(
-        grass.parse_command("r.univar", map=all_scenes_rast, flags="g")["null_cells"]
+        grass.parse_command("r.univar", map=all_scenes_rast, flags="g")[
+            "null_cells"
+        ]
     )
     if null_cells_all > 0:
         grass.fatal(
@@ -508,7 +548,9 @@ def main():
     combination_length = 1
     max_found = 0
     while max_found == 0:
-        all_combs = list(combinations(footprints_corrected, combination_length))
+        all_combs = list(
+            combinations(footprints_corrected, combination_length)
+        )
         for combi in all_combs:
             if len(combi) == 1:
                 null_cells = int(
@@ -524,7 +566,9 @@ def main():
                 combi_rast = "combi_rast_%s_%s" % (grass.tempname(5), pid)
                 rm_rasters.append(combi_rast)
                 mapcalc_str = "%s = " % combi_rast + "|||".join(combi)
-                grass.run_command("r.mapcalc", expression=mapcalc_str, quiet=True)
+                grass.run_command(
+                    "r.mapcalc", expression=mapcalc_str, quiet=True
+                )
                 null_cells = int(
                     grass.parse_command("r.univar", map=combi_rast, flags="g")[
                         "null_cells"
@@ -533,10 +577,16 @@ def main():
                 # manually remove combi_rast here so the mapset does not get
                 # too full
                 grass.run_command(
-                    "g.remove", type="raster", name=combi_rast, flags="f", quiet=True
+                    "g.remove",
+                    type="raster",
+                    name=combi_rast,
+                    flags="f",
+                    quiet=True,
                 )
                 if null_cells == 0:
-                    scenes_to_import.extend([rast.split("_rast")[0] for rast in combi])
+                    scenes_to_import.extend(
+                        [rast.split("_rast")[0] for rast in combi]
+                    )
                     max_found = 1
                     break
 
@@ -570,7 +620,9 @@ def main():
             try:
                 os.makedirs(outpath)
             except Exception as e:
-                grass.fatal(_("Unable to create directory <%s>: %s" % (outpath, e)))
+                grass.fatal(
+                    _("Unable to create directory <%s>: %s" % (outpath, e))
+                )
 
     grass.run_command(
         "i.sentinel_1.download_asf",
@@ -580,7 +632,9 @@ def main():
         granules=",".join(scenes_to_import),
         quiet=True,
     )
-    s1_zips = [os.path.join(outpath, "%s.zip" % scene) for scene in scenes_to_import]
+    s1_zips = [
+        os.path.join(outpath, "%s.zip" % scene) for scene in scenes_to_import
+    ]
     rm_files = s1_zips
 
     # import S-1 scenes into GRASS
@@ -608,7 +662,9 @@ def main():
 
     # patch it together
     for bandname in bandnames:
-        rasters_to_patch = [scene for scene in scenes_imported if bandname in scene]
+        rasters_to_patch = [
+            scene for scene in scenes_imported if bandname in scene
+        ]
         output_name = "%s_%s_log" % (output, bandname)
         if len(rasters_to_patch) == 1:
             grass.run_command(
@@ -618,7 +674,10 @@ def main():
             )
         else:
             grass.run_command(
-                "r.patch", input=rasters_to_patch, output=output_name, quiet=True
+                "r.patch",
+                input=rasters_to_patch,
+                output=output_name,
+                quiet=True,
             )
         grass.message(_("Generated output raster <%s>" % output_name))
 
