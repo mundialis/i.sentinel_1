@@ -67,15 +67,15 @@
 # % label: Output raster map containing areas of change
 # %end
 
-
-import grass.script as grass
 import os
 import atexit
+import grass.script as grass
 
 rm_rasters = []
 
 
 def cleanup():
+    """Clean up"""
     nuldev = open(os.devnull, "w")
     kwargs = {"flags": "f", "quiet": True, "stderr": nuldev}
     for rmrast in rm_rasters:
@@ -84,7 +84,7 @@ def cleanup():
 
 
 def main():
-
+    """Main function of Addon"""
     global rm_rasters
     date1_vv = options["date1_vv"]
     date1_vh = options["date1_vh"]
@@ -95,27 +95,29 @@ def main():
     output = options["output"]
 
     pid_str = str(os.getpid())
-    tmp_ratio_vv = "ratio_vv_{}".format(pid_str)
-    tmp_ratio_vh = "ratio_vh_{}".format(pid_str)
+    tmp_ratio_vv = f"ratio_vv_{pid_str}"
+    tmp_ratio_vh = f"ratio_vh_{pid_str}"
     rm_rasters.extend([tmp_ratio_vv, tmp_ratio_vh])
     # calculate ratios of natural values (10^(<db_val/10>)) to get positive
     # numbers only
-    exp_ratio_vv = "{} = float(10^({}/10))/float(10^({}/10))".format(
-        tmp_ratio_vv, date2_vv, date1_vv
+    exp_ratio_vv = (
+        f"{tmp_ratio_vv} = float(10^({date2_vv}/10))"
+        f"/float(10^({date1_vv}/10))"
     )
-    exp_ratio_vh = "{} = float(10^({}/10))/float(10^({}/10))".format(
-        tmp_ratio_vh, date2_vh, date1_vh
+    exp_ratio_vh = (
+        f"{tmp_ratio_vh} = float(10^({date2_vh}/10))"
+        f"/float(10^({date1_vh}/10))"
     )
     for exp in [exp_ratio_vv, exp_ratio_vh]:
-        grass.message(_("Calculating ratio raster {}...").format(exp.split("=")[0]))
+        grass.message(_(f"Calculating ratio raster {exp.split('=')[0]}..."))
         grass.run_command("r.mapcalc", expression=exp, quiet=True)
 
     result_rasts = []
     for idx, tuple in enumerate([(tmp_ratio_vv, "vv"), (tmp_ratio_vh, "vh")]):
         ratio = tuple[0]
-        grass.message(_("Smoothing ratio raster {}...").format(ratio))
+        grass.message(_(f"Smoothing ratio raster {ratio}..."))
 
-        ratio_smoothed = "{}_tmp_{}_smoothed".format(ratio, idx)
+        ratio_smoothed = f"{ratio}_tmp_{idx}_smoothed"
         rm_rasters.append(ratio_smoothed)
         grass.run_command(
             "r.neighbors",
@@ -140,7 +142,9 @@ def main():
 
     patched = f"changes_patched_{pid_str}"
     rm_rasters.append(patched)
-    grass.run_command("r.patch", input=result_rasts, output=patched, quiet=True)
+    grass.run_command(
+        "r.patch", input=result_rasts, output=patched, quiet=True
+    )
 
     no_contradictions = f"no_contradictions_{pid_str}"
     rm_rasters.append(no_contradictions)
@@ -158,32 +162,42 @@ def main():
             value=minsize_ha,
             quiet=True,
         )
-    except Exception as e:
+    except Exception as ex:
         # reclass.area fails if there are no areas larger than minsize_ha
         grass.warning(
             _(
-                f"An Exception occured in r.reclass.area: {e}\n"
+                f"An Exception occured in r.reclass.area: {ex}\n"
                 f"No areas larger than {minsize_ha} ha found. "
                 "Producing an output raster without changes..."
             )
         )
-        grass.run_command("r.mapcalc", expression=f"{output} = null()", quiet=True)
+        grass.run_command(
+            "r.mapcalc", expression=f"{output} = null()", quiet=True
+        )
 
     # adapt the colors
     grass.run_command("r.null", null=0, map=output, quiet=True)
     colors_new = ["0 255:255:255", "1 0:200:0", "2 200:0:0"]
     color_str = "\n".join(colors_new)
-    col_proc = grass.feed_command("r.colors", map=output, rules="-", quiet=True)
+    col_proc = grass.feed_command(
+        "r.colors", map=output, rules="-", quiet=True
+    )
     col_proc.stdin.write(color_str.encode())
     col_proc.stdin.close()
     col_proc.wait()
 
     # adapt the category labels
-    labels = ["0:No signficant Change", "1:Signal Increase", "2:Signal Decrease"]
+    labels = [
+        "0:No signficant Change",
+        "1:Signal Increase",
+        "2:Signal Decrease",
+    ]
     category_text = "\n".join(labels)
 
     # assign labels
-    cat_proc = grass.feed_command("r.category", map=output, rules="-", separator=":")
+    cat_proc = grass.feed_command(
+        "r.category", map=output, rules="-", separator=":"
+    )
     cat_proc.stdin.write(category_text.encode())
     cat_proc.stdin.close()
     # feed_command does not wait until finished

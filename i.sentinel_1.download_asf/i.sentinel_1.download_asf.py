@@ -162,7 +162,6 @@ def cleanup():
 
 
 def main():
-
     global rm_files, rm_folders, cur_wdir
     cur_wdir = os.getcwd()
 
@@ -183,7 +182,10 @@ def main():
 
     # check if aria2 is installed
     aria2_test = grass.Popen(
-        "aria2c --help", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        "aria2c --help",
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
     )
     aria2_test_resp = aria2_test.communicate()
     if len(aria2_test_resp[0]) == 0:
@@ -203,7 +205,9 @@ def main():
         if end_date < start_date:
             grass.fatal(_("End date is before start date"))
         elif end_date > now:
-            grass.warning(_("End date is in the future. Setting end to today."))
+            grass.warning(
+                _("End date is in the future. Setting end to today.")
+            )
             end = now.strftime("%Y-%m-%d")
 
     # try to create the output directory
@@ -211,7 +215,9 @@ def main():
         try:
             os.makedirs(output_folder)
         except Exception as e:
-            grass.fatal(_("Unable to create directory %s: %s") % (output_folder, e))
+            grass.fatal(
+                _("Unable to create directory %s: %s") % (output_folder, e)
+            )
 
     # put together URL
     url = "https://api.daac.asf.alaska.edu/services/search/param?"
@@ -234,17 +240,20 @@ def main():
         end_url = "%sT23:59:59UTC" % (end)
         # get the latlon information from the region
         region_ll = grass.parse_command("g.region", flags="lg")
-        polygon_url = "polygon%%28%%28%s+%s,%s+%s,%s+%s,%s+%s,%s+%s%%29%%29" % (
-            region_ll["nw_long"],
-            region_ll["nw_lat"],
-            region_ll["ne_long"],
-            region_ll["ne_lat"],
-            region_ll["se_long"],
-            region_ll["se_lat"],
-            region_ll["sw_long"],
-            region_ll["sw_lat"],
-            region_ll["nw_long"],
-            region_ll["nw_lat"],
+        polygon_url = (
+            "polygon%%28%%28%s+%s,%s+%s,%s+%s,%s+%s,%s+%s%%29%%29"
+            % (
+                region_ll["nw_long"],
+                region_ll["nw_lat"],
+                region_ll["ne_long"],
+                region_ll["ne_lat"],
+                region_ll["se_long"],
+                region_ll["se_lat"],
+                region_ll["sw_long"],
+                region_ll["sw_lat"],
+                region_ll["nw_long"],
+                region_ll["nw_lat"],
+            )
         )
         url += "start=%s&end=%s&intersectsWith=%s&platform=%s&" % (
             start_url,

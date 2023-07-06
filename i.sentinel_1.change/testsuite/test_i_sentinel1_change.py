@@ -29,6 +29,8 @@ import grass.script as grass
 
 
 class TestISentinel1Change(TestCase):
+    """Test class"""
+
     pid_str = str(os.getpid())
     # from the nc_spm dataset:
     reg_n = 228520
@@ -46,26 +48,27 @@ class TestISentinel1Change(TestCase):
     old_region = f"old_region_{pid_str}"
 
     @classmethod
-    def setUpClass(self):
+    # pylint: disable=invalid-name
+    def setUpClass(cls):
         """Ensures expected computational region and generated data"""
-        grass.run_command("g.region", save=self.old_region)
+        grass.run_command("g.region", save=cls.old_region)
         grass.run_command(
             "g.region",
-            n=self.reg_n,
-            s=self.reg_s,
-            w=self.reg_w,
-            e=self.reg_e,
+            n=cls.reg_n,
+            s=cls.reg_s,
+            w=cls.reg_w,
+            e=cls.reg_e,
             res=10,
             flags="a",
         )
         # download and import Sentinel-1 data from date 1
         grass.run_command(
             "i.sentinel_1.mosaic",
-            settings=self.s2_creds,
-            asf_credentials=self.asf_creds,
+            settings=cls.s2_creds,
+            asf_credentials=cls.asf_creds,
             start="2017-07-01",
             end="2017-07-15",
-            output=self.date1,
+            output=cls.date1,
             bandname="Gamma0_VV,Gamma0_VH",
             flags="s",
             quiet=True,
@@ -73,43 +76,49 @@ class TestISentinel1Change(TestCase):
         # download and import Sentinel-1 data from date 2
         grass.run_command(
             "i.sentinel_1.mosaic",
-            settings=self.s2_creds,
-            asf_credentials=self.asf_creds,
+            settings=cls.s2_creds,
+            asf_credentials=cls.asf_creds,
             start="2020-07-01",
             end="2020-07-15",
-            output=self.date2,
+            output=cls.date2,
             bandname="Gamma0_VV,Gamma0_VH",
             flags="s",
             quiet=True,
         )
 
     @classmethod
-    def tearDownClass(self):
+    # pylint: disable=invalid-name
+    def tearDownClass(cls):
         """Remove the temporary region and generated data"""
-        grass.run_command("g.region", region=self.old_region)
+        grass.run_command("g.region", region=cls.old_region)
         grass.run_command(
             "g.remove",
             type="raster",
             name=(
-                f"{self.date1}_Gamma0_VV_log,"
-                f"{self.date1}_Gamma0_VH_log,"
-                f"{self.date2}_Gamma0_VV_log,"
-                f"{self.date2}_Gamma0_VH_log"
+                f"{cls.date1}_Gamma0_VV_log,"
+                f"{cls.date1}_Gamma0_VH_log,"
+                f"{cls.date2}_Gamma0_VV_log,"
+                f"{cls.date2}_Gamma0_VH_log"
             ),
             flags="f",
         )
-        grass.run_command("g.remove", type="region", name=self.old_region, flags="f")
-        grass.try_remove(self.asf_creds)
-        grass.try_remove(self.s2_creds)
+        grass.run_command(
+            "g.remove", type="region", name=cls.old_region, flags="f"
+        )
+        grass.try_remove(cls.asf_creds)
+        grass.try_remove(cls.s2_creds)
 
+    # pylint: disable=invalid-name
     def tearDown(self):
         """Remove the outputs created
         This is executed after each test run.
         """
-        grass.run_command("g.remove", type="raster", name=self.change_map, flags="f")
+        grass.run_command(
+            "g.remove", type="raster", name=self.change_map, flags="f"
+        )
 
     def test_sentinel1_change_success(self):
-        """ Test a successful change extraction """
+        """Test a successful change extraction"""
         s1_change = SimpleModule(
             "i.sentinel_1.change",
             date1_vv=f"{self.date1}_Gamma0_VV_log",
@@ -124,17 +133,25 @@ class TestISentinel1Change(TestCase):
         self.assertRasterExists(self.change_map)
 
         raster_cats = list(
-            grass.parse_command("r.category", map=self.change_map, separator=":").keys()
+            grass.parse_command(
+                "r.category", map=self.change_map, separator=":"
+            ).keys()
         )
-        ref_cats = ["0:No signficant Change", "1:Signal Increase", "2:Signal Decrease"]
+        ref_cats = [
+            "0:No signficant Change",
+            "1:Signal Increase",
+            "2:Signal Decrease",
+        ]
         for ref_cat in ref_cats:
             self.assertIn(
-                ref_cat, raster_cats, (f"Category {ref_cat} is not" " in output map")
+                ref_cat,
+                raster_cats,
+                (f"Category {ref_cat} is not" " in output map"),
             )
 
     def test_sentinel1_change_nochange(self):
-        """ Test a successful change extraction without any changes
-            (min_size very large)
+        """Test a successful change extraction without any changes
+        (min_size very large)
         """
         s1_change = SimpleModule(
             "i.sentinel_1.change",
