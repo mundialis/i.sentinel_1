@@ -126,7 +126,6 @@ def RCalibration(input_product, cal_measure):
 
 
 def TerrainCorrection(input_product, crsWkt, sourceBands, dem):
-
     parameters = HashMap()
     parameters.put("saveLatLon", False)
     parameters.put("saveIncidenceAngleFromEllipsoid", False)

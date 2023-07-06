@@ -98,7 +98,9 @@ class TestISentinel1Change(TestCase):
             ),
             flags="f",
         )
-        grass.run_command("g.remove", type="region", name=self.old_region, flags="f")
+        grass.run_command(
+            "g.remove", type="region", name=self.old_region, flags="f"
+        )
         grass.try_remove(self.asf_creds)
         grass.try_remove(self.s2_creds)
 
@@ -106,10 +108,12 @@ class TestISentinel1Change(TestCase):
         """Remove the outputs created
         This is executed after each test run.
         """
-        grass.run_command("g.remove", type="raster", name=self.change_map, flags="f")
+        grass.run_command(
+            "g.remove", type="raster", name=self.change_map, flags="f"
+        )
 
     def test_sentinel1_change_success(self):
-        """ Test a successful change extraction """
+        """Test a successful change extraction"""
         s1_change = SimpleModule(
             "i.sentinel_1.change",
             date1_vv=f"{self.date1}_Gamma0_VV_log",
@@ -124,17 +128,25 @@ class TestISentinel1Change(TestCase):
         self.assertRasterExists(self.change_map)
 
         raster_cats = list(
-            grass.parse_command("r.category", map=self.change_map, separator=":").keys()
+            grass.parse_command(
+                "r.category", map=self.change_map, separator=":"
+            ).keys()
         )
-        ref_cats = ["0:No signficant Change", "1:Signal Increase", "2:Signal Decrease"]
+        ref_cats = [
+            "0:No signficant Change",
+            "1:Signal Increase",
+            "2:Signal Decrease",
+        ]
         for ref_cat in ref_cats:
             self.assertIn(
-                ref_cat, raster_cats, (f"Category {ref_cat} is not" " in output map")
+                ref_cat,
+                raster_cats,
+                (f"Category {ref_cat} is not" " in output map"),
             )
 
     def test_sentinel1_change_nochange(self):
-        """ Test a successful change extraction without any changes
-            (min_size very large)
+        """Test a successful change extraction without any changes
+        (min_size very large)
         """
         s1_change = SimpleModule(
             "i.sentinel_1.change",

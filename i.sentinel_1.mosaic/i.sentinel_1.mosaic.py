@@ -365,7 +365,6 @@ def shrink_footprint(input, distance, memory, unit):
 
 
 def main():
-
     global rm_regions, rm_rasters, rm_vectors, tempdir, rm_files, saved_region
 
     # check if we have required addons

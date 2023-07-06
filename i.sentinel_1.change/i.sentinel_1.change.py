@@ -84,7 +84,6 @@ def cleanup():
 
 
 def main():
-
     global rm_rasters
     date1_vv = options["date1_vv"]
     date1_vh = options["date1_vh"]
@@ -107,7 +106,9 @@ def main():
         tmp_ratio_vh, date2_vh, date1_vh
     )
     for exp in [exp_ratio_vv, exp_ratio_vh]:
-        grass.message(_("Calculating ratio raster {}...").format(exp.split("=")[0]))
+        grass.message(
+            _("Calculating ratio raster {}...").format(exp.split("=")[0])
+        )
         grass.run_command("r.mapcalc", expression=exp, quiet=True)
 
     result_rasts = []
@@ -140,7 +141,9 @@ def main():
 
     patched = f"changes_patched_{pid_str}"
     rm_rasters.append(patched)
-    grass.run_command("r.patch", input=result_rasts, output=patched, quiet=True)
+    grass.run_command(
+        "r.patch", input=result_rasts, output=patched, quiet=True
+    )
 
     no_contradictions = f"no_contradictions_{pid_str}"
     rm_rasters.append(no_contradictions)
@@ -167,23 +170,33 @@ def main():
                 "Producing an output raster without changes..."
             )
         )
-        grass.run_command("r.mapcalc", expression=f"{output} = null()", quiet=True)
+        grass.run_command(
+            "r.mapcalc", expression=f"{output} = null()", quiet=True
+        )
 
     # adapt the colors
     grass.run_command("r.null", null=0, map=output, quiet=True)
     colors_new = ["0 255:255:255", "1 0:200:0", "2 200:0:0"]
     color_str = "\n".join(colors_new)
-    col_proc = grass.feed_command("r.colors", map=output, rules="-", quiet=True)
+    col_proc = grass.feed_command(
+        "r.colors", map=output, rules="-", quiet=True
+    )
     col_proc.stdin.write(color_str.encode())
     col_proc.stdin.close()
     col_proc.wait()
 
     # adapt the category labels
-    labels = ["0:No signficant Change", "1:Signal Increase", "2:Signal Decrease"]
+    labels = [
+        "0:No signficant Change",
+        "1:Signal Increase",
+        "2:Signal Decrease",
+    ]
     category_text = "\n".join(labels)
 
     # assign labels
-    cat_proc = grass.feed_command("r.category", map=output, rules="-", separator=":")
+    cat_proc = grass.feed_command(
+        "r.category", map=output, rules="-", separator=":"
+    )
     cat_proc.stdin.write(category_text.encode())
     cat_proc.stdin.close()
     # feed_command does not wait until finished

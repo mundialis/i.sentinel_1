@@ -307,9 +307,7 @@ def main():
     mapnamedim = "%s.dim" % (mapname)
     outname = os.path.join(outpath, mapnamedim)
     # out_dim = ProductIO.writeProduct(
-    ProductIO.writeProduct(
-        exp_product, File(outname), "BEAM-DIMAP", True
-    )
+    ProductIO.writeProduct(exp_product, File(outname), "BEAM-DIMAP", True)
     # importing to GRASS
     # open the .data folder:
     datafolder = os.path.splitext(outname)[0] + ".data"
