@@ -19,7 +19,8 @@
 <em><b>i.sentinel_1</b></em> is a GRASS GIS addon toolset that searches, downloads, imports
 and preprocesses SAR data from the <a href="https://asf.alaska.edu/">Alaska Satellite Facility</a>
 using ESA's <a href="https://step.esa.int/main/download/snap-download/">SNAP</a>
-software. If a region is covered by multiple Sentinel-1 GRD tiles, a mosaic can be created.
+software. If a region is covered by multiple Sentinel-1 GRD tiles, a mosaic can be created. 
+Additionally, a forest extraction tool is included.
 
 <h2>KEYWORDS</h2>
 <a href="https://grass.osgeo.org/grass-stable/manuals/raster.html">imagery</a>, <a href="https://grass.osgeo.org/grass-stable/manuals/topic_import.html">import</a>, <a href="keywords.html#satellite">satellite</a>, <a href="keywords.html#Sentinel">Sentinel</a>
@@ -27,7 +28,7 @@ software. If a region is covered by multiple Sentinel-1 GRD tiles, a mosaic can 
 <!-- meta page description: Toolset for download and processing time series of Sentinel-1 products -->
 <h2>DESCRIPTION</h2>
 
-The <em>i.sentinel_1</em> toolset consists of currently four modules:
+The <em>i.sentinel_1</em> toolset consists of currently five modules:
 <dl>
   <dt><a href="i.sentinel_1.download_asf.html">i.sentinel_1.download_asf</a></dt>
   <dd>searches and downloads SAR data from the <a href="https://asf.alaska.edu/">Alaska Satellite Facility</a>
@@ -37,7 +38,9 @@ The <em>i.sentinel_1</em> toolset consists of currently four modules:
   <dd>downloads and imports an entire Sentinel-1 GRD SAR coverage for the current region using <a href="i.sentinel_1.download_asf.html.html">i.sentinel_1.download_asf</a> and <a href="i.sentinel_1.import">i.sentinel_1.import</a>
   <dt><a href="i.sentinel_1.change.html">i.sentinel_1.change</a></dt>
   <dd>extracts areas of change from two Sentinel-1 GRD SAR data time-steps using a user-defined change threshold of backscatter ratio
-</dl>
+  <dt><a href="i.sentinel_1.forest.mask.html">i.sentinel_1.forest.mask</a></dt>
+  <dd>extracts forest areas based on Sentinel-1 gamma0 VV and VH data using a rule-based image segmentation approach
+  </dl>
 
 <h2>REQUIREMENTS</h2>
 
@@ -57,7 +60,13 @@ Mosaicking (<a href="i.sentinel_1.mosaic.html">i.sentinel_1.mosaic</a>):
   <li><a href="i.sentinel.download.html">i.sentinel.download</a></li>
   <li><a href="i.sentinel.import.html">i.sentinel.import</a></li>
 </ul>
+Forest Extraction (<a href="i.sentinel_1.forest.mask.html">i.sentinel_1.forest.mask</a>):
+<ul>
+  <li><a href="https://github.com/mundialis/grass-gis-helpers/">grass-gis-helpers</a></li>
+</ul>
 
 <h2>AUTHORS</h2>
 
-Guido Riembauer and Hajar Benelcadi, <a href="https://www.mundialis.de/">mundialis</a>, Germany
+Guido Riembauer, <a href="https://www.mundialis.de/">mundialis GmbH &amp; Co. KG</a><br>
+Hajar Benelcadi, <a href="https://www.mundialis.de/">mundialis GmbH &amp; Co. KG</a><br>
+Johannes Halbauer, <a href="https://www.mundialis.de/">mundialis GmbH &amp; Co. KG</a><br>
