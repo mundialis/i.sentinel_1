@@ -10,3 +10,4 @@ per-file-ignores =
     ./i.sentinel_1.download_asf/i.sentinel_1.download_asf.py: F821, E501
     ./i.sentinel_1.import/i.sentinel_1.import.py: F821, E501
     ./i.sentinel_1.mosaic/i.sentinel_1.mosaic.py: F821, E501
+    ./i.sentinel_1.forest.mask/i.sentinel_1.forest.mask.py: F821, E501
